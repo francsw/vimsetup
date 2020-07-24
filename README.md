@@ -40,7 +40,7 @@ call plug#end()
 ```
 cp ./vimrc ~/.vimrc
 ```
-- Rerun `:Pluginstall`
+- Rerun `:PlugInstall`
 
 ## **Updating plugins**
 
