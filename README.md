@@ -1,249 +1,58 @@
-# lazygit
 
-![CI](https://github.com/jesseduffield/lazygit/workflows/Continuous%20Integration/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/jesseduffield/lazygit)](https://goreportcard.com/report/github.com/jesseduffield/lazygit) [![GolangCI](https://golangci.com/badges/github.com/jesseduffield/lazygit.svg)](https://golangci.com) [![GoDoc](https://godoc.org/github.com/jesseduffield/lazygit?status.svg)](http://godoc.org/github.com/jesseduffield/lazygit) [![GitHub tag](https://img.shields.io/github/tag/jesseduffield/lazygit.svg)]() [![TODOs](https://badgen.net/https/api.tickgit.com/badgen/github.com/jesseduffield/lazygit)](https://www.tickgit.com/browse?repo=github.com/jesseduffield/lazygit)
 
-A simple terminal UI for git commands, written in Go with the [gocui](https://github.com/jroimartin/gocui "gocui") library.
+Plugin manager:  https://github.com/junegunn/vim-plug/wiki/tutorial
 
-Rant time: You've heard it before, git is _powerful_, but what good is that power when everything is so damn hard to do? Interactive rebasing requires you to edit a goddamn TODO file in your editor? *Are you kidding me?* To stage part of a file you need to use a command line program to step through each hunk and if a hunk can't be split down any further but contains code you don't want to stage, you have to edit an arcane patch file _by hand_? *Are you KIDDING me?!* Sometimes you get asked to stash your changes when switching branches only to realise that after you switch and unstash that there weren't even any conflicts and it would have been fine to just checkout the branch directly? *YOU HAVE GOT TO BE KIDDING ME!*
-
-If you're a mere mortal like me and you're tired of hearing how powerful git is when in your daily life it's a powerful pain in your ass, lazygit might be for you.
-
-![Gif](/docs/resources/staging.gif)
-
-## Table of contents
-
-- [Installation](#installation)
-  - [Binary releases](#binary-releases)
-  - [Homebrew](#homebrew)
-  - [MacPorts](#macports)
-  - [Ubuntu](#ubuntu)
-  - [Void Linux](#void-linux)
-  - [Scoop (Windows)](#scoop-windows)
-  - [Arch Linux](#arch-linux)
-  - [Fedora and CentOS 7](#fedora-and-centos-7)
-  - [Conda](#conda)
-  - [Go](#go)
-- [Usage](#usage)
-  - [Keybindings](#keybindings)
-  - [Changing directory on exit](#changing-directory-on-exit)
-  - [Undo/Redo](#undoredo)
-- [Configuration](#configuration)
-  - [Custom pagers](#configuration)
-- [Tutorials](#tutorials)
-- [Cool Features](#cool-features)
-- [Contributing](#contributing)
-- [Donate](#donate)
-- [Alternatives](#alternatives)
-
-Github Sponsors is matching all donations dollar-for-dollar for 12 months so if you're feeling generous consider [sponsoring me](https://github.com/sponsors/jesseduffield)
-
-[<img src="https://i.imgur.com/sVEktDn.png">](https://youtu.be/CPLdltN7wgE)
-
-## Installation
-
-### Binary Releases
-
-For Windows, Mac OS or Linux, you can download a binary release [here](../../releases).
-
-### Homebrew
-
-Normally the lazygit formula can be found in the Homebrew core but we suggest you tap our formula to get the frequently updated one. It works with Linux, too.
-
-Tap:
-
+- Install all the vim packages
 ```
-brew install jesseduffield/lazygit/lazygit
+yum install vim-minimal vim-common vim-enhanced vim-filesystem
 ```
 
-Core:
+# Download plugin manager and install
 
+- Download plugin manager into Vim (~/.vim/autoload)
 ```
-brew install lazygit
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ```
-
-### MacPorts
-
-Latest version built from github releases.
-Tap:
-
+- Edit ~/.vimrc
 ```
-sudo port install lazygit
-```
+color desert
+autocmd FileType yaml setlocal et ts=2 ai sw=2 nu sts=0
 
-### Ubuntu
-
-Packages for Ubuntu are available via [Launchpad PPA](https://launchpad.net/~lazygit-team).
-
-```sh
-sudo add-apt-repository ppa:lazygit-team/release
-sudo apt-get update
-sudo apt-get install lazygit
+" Specify a directory for plugins
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
+" Make sure you use single quotes
+Plug 'Yggdroot/indentLine'
+" Initialize plugin system
+call plug#end()
 ```
 
-### Void Linux
+- After adding the above to the top of your Vim configuration file, reload it `:source ~/.vimrc` or restart Vim. 
+- Now run `:PlugInstall` to install the plugins.
 
-Packages for Void Linux are available in the distro repo
-
-They follow upstream latest releases
-
-```sh
-sudo xbps-install -S lazygit
+- Update the .vimrc file with all the plugins from the vimrc file
 ```
-
-### Scoop (Windows)
-
-You can install `lazygit` using [scoop](https://scoop.sh/). It's in the `extras` bucket:
-
-```sh
-# Add the extras bucket
-scoop bucket add extras
-
-# Install lazygit
-scoop install lazygit
+cp ./vimrc ~/.vimrc
 ```
+- Rerun `:Pluginstall`
 
-### Arch Linux
+## **Updating plugins**
 
-Packages for Arch Linux are available via AUR (Arch User Repository).
+Run :PlugUpdate to update the plugins. After the update is finished, you can review the changes by pressing D in the window. Or you can do it later by running :PlugDiff.
 
-There are two packages. The stable one which is built with the latest release
-and the git version which builds from the most recent commit.
+## **Reviewing the changes**
 
-- Stable: <https://aur.archlinux.org/packages/lazygit/>
-- Development: <https://aur.archlinux.org/packages/lazygit-git/>
+Updated plugins may have new bugs and no longer work correctly. With :PlugDiff command you can review the changes from the last :PlugUpdate and roll each plugin back to the previous state before the update by pressing X on each paragraph.
 
-Instruction of how to install AUR content can be found here:
-<https://wiki.archlinux.org/index.php/Arch_User_Repository>
+## **Removing plugins**
 
-### Fedora and CentOS 7
+1. Delete or comment out Plug commands for the plugins you want to remove.
+2. Reload vimrc (:source ~/.vimrc) or restart Vim
+3. Run :PlugClean. It will detect and remove undeclared plugins.
 
-Packages for Fedora and CentOS 7 are available via [Copr](https://copr.fedorainfracloud.org/coprs/atim/lazygit/) (Cool Other Package Repo).
-
-```sh
-sudo dnf copr enable atim/lazygit -y
-sudo dnf install lazygit
-```
-
-### Conda
-
-Released versions are available for different platforms, see <https://anaconda.org/conda-forge/lazygit>
-
-```sh
-conda install -c conda-forge lazygit
-```
-
-### Go
-
-```sh
-go get github.com/jesseduffield/lazygit
-```
-
-Please note:
-If you get an error claiming that lazygit cannot be found or is not defined, you
-may need to add `~/go/bin` to your \$PATH (MacOS/Linux), or `%HOME%\go\bin`
-(Windows). Not to be mistaked for `C:\Go\bin` (which is for Go's own binaries,
-not apps like Lazygit).
-
-
-## Usage
-
-Call `lazygit` in your terminal inside a git repository.
-
-```sh
-$ lazygit
-```
-
-If you want, you can
-also add an alias for this with `echo "alias lg='lazygit'" >> ~/.zshrc` (or
-whichever rc file you're using).
-
-### Keybindings
-
-You can check out the list of keybindings [here](/docs/keybindings).
-
-### Changing Directory On Exit
-
-If you change repos in lazygit and want your shell to change directory into that repo on exiting lazygit, add this to your `~/.zshrc` (or other rc file):
-
-```
-lg()
-{
-    export LAZYGIT_NEW_DIR_FILE=~/.lazygit/newdir
-
-    lazygit "$@"
-
-    if [ -f $LAZYGIT_NEW_DIR_FILE ]; then
-            cd "$(cat $LAZYGIT_NEW_DIR_FILE)"
-            rm -f $LAZYGIT_NEW_DIR_FILE > /dev/null
-    fi
-}
-```
-
-Then `source ~/.zshrc` and from now on when you call `lg` and exit you'll switch directories to whatever you were in inside lazyigt. To override this behaviour you can exit using `shift+Q` rather than just `q`.
-
-### Undo/Redo
-
-See the [docs](/docs/Undoing.md)
-
-## Configuration
-
-Check out the [configuration docs](docs/Config.md).
-
-### Custom Pagers
-
-See the [docs](docs/Custom_Pagers.md)
-
-## Tutorials
-
-- [Video Tutorial](https://youtu.be/VDXvbHZYeKY)
-- [Rebase Magic Video Tutorial](https://youtu.be/4XaToVut_hs)
-- [Twitch Stream](https://www.twitch.tv/jesseduffield)
-
-
-## Cool features
-
-- Adding files easily
-- Resolving merge conflicts
-- Easily check out recent branches
-- Scroll through logs/diffs of branches/commits/stash
-- Quick pushing/pulling
-- Squash down and rename commits
-
-### Resolving merge conflicts
-
-![Gif](/docs/resources/resolving-merge-conflicts.gif)
-
-### Interactive Rebasing
-
-![Interactive Rebasing](/docs/resources/rebase.gif)
-
-## Contributing
-
-We love your input! Please check out the [contributing guide](CONTRIBUTING.md).
-For contributor discussion about things not better discussed here in the repo, join the slack channel
-
-[![Slack](/docs/resources/slack_rgb.png)](https://join.slack.com/t/lazygit/shared_invite/zt-5bo2clzo-hB8ZTVN5dWUCqj5QFiQVLA)
-
-## Donate
-
-If you would like to support the development of lazygit, consider [sponsoring me](https://github.com/sponsors/jesseduffield) (github is matching all donations dollar-for-dollar for 12 months)
-
-## Work in progress
-
-This is still a work in progress so there's still bugs to iron out and as this
-is my first project in Go the code could no doubt use an increase in quality,
-but I'll be improving on it whenever I find the time. If you have any feedback
-feel free to [raise an issue](https://github.com/jesseduffield/lazygit/issues)/[submit a PR](https://github.com/jesseduffield/lazygit/pulls).
-
-## Social
-
-If you want to see what I (Jesse) am up to in terms of development, follow me on
-[twitter](https://twitter.com/DuffieldJesse) or watch me program on
-[twitch](https://www.twitch.tv/jesseduffield).
-
-## Alternatives
-
-If you find that lazygit doesn't quite satisfy your requirements, these may be a better fit:
-
-- [tig](https://github.com/jonas/tig)
-# vimsetup
+**Errors**
+RHEL8 uses vi minimal which doesn't support plugins
+Either use vim and relink the /usr/bin/vi command
+mv /usr/bin/vi /usr/bin/vi.old
+ln -s /usr/bin/vim /usr/bin/vi
