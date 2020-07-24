@@ -1,0 +1,90 @@
+if $TERM == "xterm-256color"
+  set t_Co=256
+endif
+
+autocmd FileType yaml setlocal et ts=2 ai sw=2 nu sts=0
+" asciidoc - *.adoc
+au BufRead,BufNewFile *.yaml set filetype=ansible.yaml
+au BufRead,BufNewFile *.yml set filetype=ansible.yaml
+
+syntax on
+set number
+set showbreak=>
+set shiftwidth=2
+set tabstop=2
+
+"set background=dark
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_start_level=2
+let g:indent_guides_guide_size = 1
+let g:indent_guides_auto_colors = 0
+let g:indent_guides_color_change_percent = 10
+let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
+au VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=238
+au VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=236
+"hi IndentGuidesOdd  ctermbg=black 
+"hi IndentGuidesEven ctermbg=darkgrey
+"let g:indent_guides_auto_colors = 0
+"autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black   ctermbg=3
+"autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=4
+
+"hi IndentGuidesOdd  guibg=red   ctermbg=3
+
+"ALE linter options
+"let g:ale_linters = {
+"\   'yaml': ['ansible-lint'],
+"\   'yml': ['ansible-lint'],
+"\}
+
+" Specify a directory for plugins
+" " - For Neovim: stdpath('data') . '/plugged'
+" " - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
+"
+" " Make sure you use single quotes
+"
+"Plug 'Yggdroot/indentLine'
+Plug 'nathanaelkane/vim-indent-guides'
+"Plug 'pearofducks/ansible-vim'
+Plug 'dense-analysis/ale'
+Plug 'sjl/badwolf', { 'as': 'badwolf'}
+Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'sheerun/vim-polyglot'
+Plug 'vim-airline/vim-airline'
+Plug 'tpope/vim-endwise'
+Plug 'preservim/nerdtree'
+
+" " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+" Plug 'junegunn/vim-easy-align'
+"
+" " Any valid git URL is allowed
+" Plug 'https://github.com/junegunn/vim-github-dashboard.git'
+"
+" " Multiple Plug commands can be written in a single line using | separators
+" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+"
+" " On-demand loading
+" Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+" Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+"
+" " Using a non-master branch
+" Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+"
+" " Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
+" Plug 'fatih/vim-go', { 'tag': '*' }
+"
+" " Plugin options
+" Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
+"
+" " Plugin outside ~/.vim/plugged with post-update hook
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+"
+" " Unmanaged plugin (manually installed and updated)
+" Plug '~/my-prototype-plugin'
+"
+" " Initialize plugin system
+call plug#end()
+
+colorscheme badwolf
+"colorscheme jellybeans
+"colorscheme solarized8
