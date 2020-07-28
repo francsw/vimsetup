@@ -6,7 +6,13 @@ Plugin manager:  https://github.com/junegunn/vim-plug/wiki/tutorial
 ```
 yum install vim-minimal vim-common vim-enhanced vim-filesystem
 ```
-
+- Set vi alias to vim
+```
+alias vi=vim
+```
+- Make sure putty uses 256 color
+  Configuration -> Connection-> Data -> Terminal-type string = "putty-256color"
+  
 # Download plugin manager and install
 
 - Download plugin manager into Vim (~/.vim/autoload)
