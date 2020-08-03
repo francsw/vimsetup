@@ -1,5 +1,3 @@
-
-
 Plugin manager:  https://github.com/junegunn/vim-plug/wiki/tutorial
 
 - Install all the vim packages
@@ -67,3 +65,7 @@ RHEL8 uses vi minimal which doesn't support plugins
 Either use vim and relink the /usr/bin/vi command
 mv /usr/bin/vi /usr/bin/vi.old
 ln -s /usr/bin/vim /usr/bin/vi
+
+
+## **Removing plugins**
+17:07
