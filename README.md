@@ -20,8 +20,18 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 ```
 -  or copy it 
 ```
+cd ~/vimsetup/vimsetup
+mkdir ~/.vim/autoload
 cp plug.vim ~/.vim/autoload/
 ```
+Copy vimrc file
+```
+cp vimrc ~/.vimrc
+```
+
+Run :PlugInstall inside VIM
+
+# Minimal manual install
 
 - Edit ~/.vimrc
 ```
